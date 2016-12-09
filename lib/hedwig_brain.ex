@@ -1,7 +1,7 @@
 defmodule HedwigBrain do
   use Application
 
-  @brain_type Application.get_env(:hedwig_brain, :brain_type) || HedwigBrain.InMemory.Brain
+  @brain_type Application.get_env(:hedwig_brain, :brain_type)
 
   # See http://elixir-lang.org/docs/stable/elixir/Application.html
   # for more information on OTP Applications

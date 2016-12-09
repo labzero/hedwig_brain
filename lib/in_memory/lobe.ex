@@ -1,5 +1,4 @@
 defmodule HedwigBrain.InMemory.Lobe do
-  use HedwigBrain.Lobe
   @doc """
   Starts a new `lobe`.
   """

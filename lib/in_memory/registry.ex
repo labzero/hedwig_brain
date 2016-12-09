@@ -1,7 +1,5 @@
 defmodule HedwigBrain.InMemory.Registry do
   use GenServer
-  #@behaviour HedwigBrain.Brain
-  use HedwigBrain.Brain
 
   alias HedwigBrain.InMemory.LobeSupervisor
   alias HedwigBrain.InMemory.Lobe

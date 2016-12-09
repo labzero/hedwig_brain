@@ -4,6 +4,7 @@ defmodule HedwigBrain.InMemory.Brain do
 
   @registry_name HedwigBrain.InMemory.Registry
   @lobe_supervisor_name HedwigBrain.InMemory.LobeSupervisor
+  @lobe_name HedwigBrain.InMemory.Lobe
 
   def start_link(opts) do
     Supervisor.start_link(__MODULE__, :ok, opts)
@@ -21,5 +22,9 @@ defmodule HedwigBrain.InMemory.Brain do
   defdelegate lookup(name), to: @registry_name
   defdelegate dump, to: @registry_name 
   defdelegate stop, to: @registry_name
-
+  defdelegate brain, to: HedwigBrain
+  
+  defdelegate get(lobe, key), to: @lobe_name
+  defdelegate put(lobe, key, value), to: @lobe_name
+  defdelegate delete(lobe, key), to: @lobe_name
 end
