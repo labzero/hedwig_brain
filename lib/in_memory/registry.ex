@@ -35,16 +35,6 @@ defmodule HedwigBrain.InMemory.Registry do
     GenServer.call(server, {:lookup, name})
   end  
 
-  # replace this with a default no-op implementation in a brain behaviour that we `use`
-
-  #def save do
-  #  save(__MODULE__)
-  #end
-
-  #def save(_server) do
-    # noop
-  #end
-
   def dump do
     dump(__MODULE__)
   end

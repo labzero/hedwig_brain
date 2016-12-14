@@ -27,4 +27,6 @@ defmodule HedwigBrain.InMemory.Brain do
   defdelegate get(lobe, key), to: @lobe_name
   defdelegate put(lobe, key, value), to: @lobe_name
   defdelegate delete(lobe, key), to: @lobe_name
+  defdelegate delete_all(lobe), to: @lobe_name
+  defdelegate all(lobe), to: @lobe_name
 end

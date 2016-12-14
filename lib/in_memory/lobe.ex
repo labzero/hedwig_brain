@@ -28,6 +28,14 @@ defmodule HedwigBrain.InMemory.Lobe do
     Agent.get_and_update(lobe, &Map.pop(&1, key))
   end
 
+
+  @doc """
+  Deletes all items from the `lobe`
+  """
+  def delete_all(lobe) do
+    Agent.update(lobe, fn _ -> %{} end)
+  end
+
   @doc """
   Returns all the items in the `lobe`
   """

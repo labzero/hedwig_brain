@@ -4,16 +4,17 @@ defmodule HedwigBrain.Brain do
     quote do
       @behaviour HedwigBrain.Brain
 
-      def save do
-      end
+      def save, do: :ok
 
-      def load do        
-      end
+      def load, do: :ok
     end
   end  
 
   @doc "do any necessary setup"
   @callback load() :: :ok
+
+  @doc "if the brain only writes to durable storage periodically, implement this"
+  @callback save() :: :ok  
 
   @doc "get (creating if necessary) a storage namespace in the brain"
   @callback get_lobe(lobe_name :: term) :: pid
@@ -30,7 +31,13 @@ defmodule HedwigBrain.Brain do
   @doc "retrieve a value from the specified lobe"
   @callback get(lobe :: atom, key :: term) :: term
 
+  @doc "retrieve all values from the specified lobe"
+  @callback all(lobe :: atom) :: map
+  
   @doc "delete a value from the specified lobe"
   @callback delete(lobe :: atom, key :: term) :: :ok
+
+  @doc "delete all items from the specified lobe"
+  @callback delete_all(lobe :: atom) :: :ok  
 
 end
