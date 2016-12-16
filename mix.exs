@@ -16,7 +16,7 @@ defmodule HedwigBrain.Mixfile do
   #
   # Type "mix help compile.app" for more information
   def application do
-    [applications: [:logger],
+    [applications: [:logger, :redix],
      mod: {HedwigBrain, []}]
   end
 
@@ -30,6 +30,6 @@ defmodule HedwigBrain.Mixfile do
   #
   # Type "mix help deps" for more examples and options
   defp deps do
-    []
+    [ {:redix, "~> 0.4"},]
   end
 end

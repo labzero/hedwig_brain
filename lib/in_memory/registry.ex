@@ -5,8 +5,7 @@ defmodule HedwigBrain.InMemory.Registry do
   alias HedwigBrain.InMemory.Lobe
 
   def start_link(opts \\ []) do
-    result = GenServer.start_link(__MODULE__, {}, Keyword.merge(opts, [name: __MODULE__]))
-    result
+    GenServer.start_link(__MODULE__, {}, Keyword.merge(opts, [name: __MODULE__]))    
   end
 
   # API
@@ -45,14 +44,12 @@ defmodule HedwigBrain.InMemory.Registry do
 
   ## Callbacks
 
-  def init(_state) do  
-    names = Map.new
-    refs  = Map.new
-    {:ok, %{names: names, refs: refs}}
+  def init(_state) do      
+    {:ok, %{names: %{}, refs: %{}}}
   end
 
-  def handle_call({:lookup, name}, _from, names) do
-    {:reply, Map.fetch(names, name), names}
+  def handle_call({:lookup, name}, _from, %{names: names} = state) do
+    {:reply, Map.fetch(names, name), state}
   end
 
   def handle_call({:create, name}, _from, %{names: names, refs: refs} = state) do
@@ -62,20 +59,30 @@ defmodule HedwigBrain.InMemory.Registry do
       :error ->
         {:ok, pid} = LobeSupervisor.start_lobe
         ref = Process.monitor(pid)
-        new_refs = Map.put(refs, ref, name)
-        new_names = Map.put(names, name, pid)
-        {:reply, pid, %{names: new_names, refs: new_refs}}
+        {:reply, pid, %{names: Map.put(names, name, pid), refs: Map.put(refs, ref, name)}}
     end
   end
 
   def handle_call(:dump, _from, %{names: names} = state) do
-    data = names
-    |> Enum.map(fn {name, pid} -> {name, Lobe.all(pid)} end)
-    |> Enum.into(%{})
+    data 
+      = names
+      |> Enum.map(fn {name, pid} -> {name, Lobe.all(pid)} end)
+      |> Enum.into(%{})
     {:reply, data, state}
   end
 
   def handle_call(:stop, _from, state) do
     {:stop, :normal, :ok, state}
+  end  
+
+  # remove dead processes from our state
+  def handle_info({:DOWN, ref, :process, _pid, _reason}, {names, refs}) do
+    {name, refs} = Map.pop(refs, ref)
+    names = Map.delete(names, name)
+    {:noreply, {names, refs}}
+  end
+
+  def handle_info(_msg, state) do
+    {:noreply, state}
   end  
 end
