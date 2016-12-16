@@ -1,7 +1,7 @@
 defmodule HedwigBrain.InMemory.LobeSupervisor do
   use Supervisor
 
-  @name Hedwig.InMemory.LobeSupervisor
+  @name HedwigBrain.InMemory.LobeSupervisor
 
   def start_link(opts \\ []) do
     Supervisor.start_link(__MODULE__, :ok, Keyword.merge(opts, [name: @name]))

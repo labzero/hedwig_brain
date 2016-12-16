@@ -1,13 +1,13 @@
-defmodule InMemoryBrainTest do
+defmodule RedisBrainTest do
   use ExUnit.Case
 
   setup_all do
-    {:ok, _} = HedwigBrain.InMemory.Brain.start_link([])
+    {:ok, _} = HedwigBrain.Redis.Brain.start_link([])
     :ok
   end
 
   setup do
-    brain = HedwigBrain.InMemory.Brain
+    brain = HedwigBrain.Redis.Brain
     lobe = brain.get_lobe("test_lobe")
     brain.delete_all(lobe)
     %{brain: brain, lobe: lobe}
@@ -27,8 +27,12 @@ defmodule InMemoryBrainTest do
     assert brain.stop == :ok
   end    
 
-  test "get_lobe returns a process reference", %{lobe: lobe} do
-    assert is_pid(lobe)
+  test "get_lobe returns a Lobe", %{lobe: lobe} do
+    assert %HedwigBrain.Redis.Lobe{} = lobe
+  end  
+
+  test "a lobe has a pid for a redis connection", %{lobe: lobe} do
+    assert is_pid(lobe.conn)
   end
 
   # Tests that all brain implementations should pass

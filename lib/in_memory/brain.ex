@@ -21,7 +21,6 @@ defmodule HedwigBrain.InMemory.Brain do
   defdelegate get_lobe(name), to: @registry_name
   defdelegate lookup(name), to: @registry_name
   defdelegate dump, to: @registry_name 
-  defdelegate stop, to: @registry_name
   defdelegate brain, to: HedwigBrain
   
   defdelegate get(lobe, key), to: @lobe_name

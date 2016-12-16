@@ -3,10 +3,11 @@ defmodule HedwigBrain.Brain do
   defmacro __using__(_) do
     quote do
       @behaviour HedwigBrain.Brain
-
+      
       def save, do: :ok
-
       def load, do: :ok
+      def lookup, do: :ok
+      def stop, do: :ok
     end
   end  
 
@@ -16,8 +17,11 @@ defmodule HedwigBrain.Brain do
   @doc "if the brain only writes to durable storage periodically, implement this"
   @callback save() :: :ok  
 
-  @doc "get (creating if necessary) a storage namespace in the brain"
-  @callback get_lobe(lobe_name :: term) :: pid
+  @doc """
+    get (creating if necessary) a storage namespace in the brain.
+    what it returns will be implementation specific
+  """
+  @callback get_lobe(lobe_name :: term) :: term
   
   @doc "do whatever cleanup is necessary and shutdown"
   @callback stop() :: :ok
